@@ -1,0 +1,2 @@
+# Hamster
+remove image background
