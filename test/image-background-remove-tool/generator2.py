@@ -16,9 +16,11 @@ if not os.path.isdir(out_path):
 
 time_start = time.time()
 
-for file_name in os.listdir(source):
+for index, file_name in enumerate(os.listdir(source)):
+    # if file_name != '02-927.jpg':
+    #     continue
     input_path = file_name
-    output_path = 'output_' + file_name
+    output_path = 'output_' + str(index) + '.png'
 
     u2net = U2NET(device='cpu', batch_size=1)
     fba = FBAMatting(device='cpu', input_tensor_size=2048, batch_size=1)
@@ -28,8 +30,11 @@ for file_name in os.listdir(source):
     interface = Interface(pre_pipe=preprocessing, post_pipe=postprocessing, seg_pipe=u2net)
 
     image = PIL.Image.open(os.path.join(source, input_path))
+    image = image.convert(mode='RGBA')
     cat_wo_bg = interface([image])[0]
-    cat_wo_bg.save(os.path.join(out_path, output_path))
+    cat_wo_bg.save(os.path.join(out_path, output_path), format='png')
+
+    print(str(index + 1) + '/' + str(len(os.listdir(source))) + '\n')
 
 time_end = time.time()
 print('time cost', time_end - time_start, 's')
