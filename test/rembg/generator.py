@@ -1,11 +1,14 @@
 from rembg import remove
 import os
 import cv2
+import time
 
 source = "../../source/"
 out_path = "../../output/rembg/"
 if not os.path.isdir(out_path):
     os.mkdir(out_path)
+
+time_start = time.time()
 
 for index, file_name in enumerate(os.listdir(source)):
     input_path = file_name
@@ -20,3 +23,6 @@ for index, file_name in enumerate(os.listdir(source)):
     _input = cv2.imread(os.path.join(source, input_path))
     output = remove(_input)
     cv2.imwrite(os.path.join(out_path, output_path), output)
+
+time_end = time.time()
+print('time cost', time_end - time_start, 's')
