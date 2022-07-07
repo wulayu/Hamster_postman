@@ -4,8 +4,10 @@ import cv2
 
 source = "../../source/"
 out_path = "../../output/rembg/"
+if not os.path.isdir(out_path):
+    os.mkdir(out_path)
 
-for file_name in os.listdir(source):
+for index, file_name in enumerate(os.listdir(source)):
     input_path = file_name
     # a = file_name.partition('.')[0]
     # b = file_name.partition('.')[2]
@@ -13,14 +15,8 @@ for file_name in os.listdir(source):
 
     print(input_path)
     print(output_path)
-    print()
+    print(str(index + 1) + '/' + str(len(os.listdir(source))) + '\n')
 
-    input = cv2.imread(os.path.join(source, input_path))
-    output = remove(input)
+    _input = cv2.imread(os.path.join(source, input_path))
+    output = remove(_input)
     cv2.imwrite(os.path.join(out_path, output_path), output)
-
-
-
-
-
-
