@@ -17,8 +17,8 @@ if not os.path.isdir(out_path):
 time_start = time.time()
 
 for index, file_name in enumerate(os.listdir(source)):
-    # if file_name != '02-927.jpg':
-    #     continue
+    if file_name != '02-927.jpg':
+        continue
     input_path = file_name
     output_path = 'output_' + str(index) + '.png'
 
