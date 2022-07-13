@@ -36,7 +36,7 @@ for index, file_name in enumerate(os.listdir(source)):
     output_path = 'output_' + str(index) + '.png'
 
     _input = Image.open(os.path.join(source, input_path))
-    _input = _input.convert(mode='RGBA')
+    _input = _input.convert_url(mode='RGBA')
     output = remove(_input)
     output.save(os.path.join(out_path, output_path))
 
