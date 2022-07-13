@@ -12,7 +12,10 @@ from carvekit.trimap.generator import TrimapGenerator
 import xlsxwriter
 import sys
 import importlib
+
 importlib.reload(sys)
+
+from decimal import Decimal
 
 source = "../../source/"
 out_path = "../../output/image-background-remove-tool/"
@@ -36,8 +39,7 @@ for index, file_name in enumerate(os.listdir(source)):
     # if file_name != '02-927.jpg':
     #     continue
     input_path = file_name
-    a = file_name.partition('.')[0]
-    b = file_name.partition('.')[2]
+    x = input_path.rsplit(".", 1)
     output_path = 'output_' + str(index) + '.png'
 
     u2net = U2NET(device='cpu', batch_size=1)
@@ -56,14 +58,14 @@ for index, file_name in enumerate(os.listdir(source)):
     print(input_path)
     print(output_path)
     print(str(index + 1) + '/' + str(len(os.listdir(source))))
-    print(index + 1, ' time cost', time_end - time_start, ' s', '\n')
+    print(index + 1, ' time cost', Decimal(time_end - time_start).quantize(Decimal("0.00")), ' s', '\n')
     total_time += time_end - time_start;
 
-    data = [index + 1, a, b, str(time_end - time_start) + ' s']
+    data = [index + 1, x[0], x[-1], str(Decimal(time_end - time_start).quantize(Decimal("0.00"))) + ' s']
     sh.write_row('A' + str(index + 2), data)
 
-data = ['总时间：', str(total_time) + ' s']
+data = ['总时间：', str(Decimal(total_time).quantize(Decimal("0.00"))) + ' s']
 sh.write_row('C' + str(index + 3), data)
-data = ['平均时间：', str(total_time / (index + 1)) + ' s']
+data = ['平均时间：', str(Decimal(total_time / (index + 1)).quantize(Decimal("0.00"))) + ' s']
 sh.write_row('C' + str(index + 4), data)
 book.close()
