@@ -1,4 +1,4 @@
-from tool import remove
+from rembg import remove
 import os
 import time
 from PIL import Image
