@@ -7,3 +7,4 @@ for yh in reversed(range(0, height)):
 print()
 for yh in range(height, -1, -1):
     print(yh)
+
