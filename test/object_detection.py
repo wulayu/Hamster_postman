@@ -5,6 +5,9 @@ import numpy as np
 np.set_printoptions(threshold=np.inf)  # 用于测试时完整print数组
 
 source = "../output/rembg/"
+source_dir = os.listdir(source)
+# source_dir.remove('.idea')
+source_dir.sort()
 out_path = "../output/object_detection/"
 if not os.path.isdir(out_path):
     os.mkdir(out_path)
@@ -81,7 +84,7 @@ def object_detect(img):  # 返回box的四周坐标
 
 
 if __name__ == "__main__":
-    for index, file_name in enumerate(os.listdir(source)):
+    for index, file_name in enumerate(source_dir):
         if file_name != 'output_10.png':
             continue
         input_path = file_name
@@ -97,6 +100,7 @@ if __name__ == "__main__":
         result = cv2.rectangle(_input, (box[0], box[1]), (box[2], box[3]), color=box_color, thickness=2)  # 给商品加box
         part_box = _input[box[1] + 2:box[3] - 2, box[0] + 2:box[2] - 2]  # 得到box中的商品图
         part_resize = cv2.resize(part_box, (370, 370), interpolation=cv2.INTER_AREA)  # 将商品图调整大小
+        # part_resize = cv2.resize(part_box, (400, 300), interpolation=cv2.INTER_AREA)  # 将商品图调整大小
 
         '''背景图片jpg加alpha通道'''
         background = cv2.imread("thumbnail.jpg", flags=cv2.IMREAD_UNCHANGED)  # 读取背景图
@@ -108,6 +112,9 @@ if __name__ == "__main__":
         for c in range(0, 3):
             background[410:780, 20:390, c] = (
                     alpha_jpg * background[410:780, 20:390, c] + alpha_png * part_resize[:, :, c])
+        # for c in range(0, 3):
+        #     background[300:600, 400:800, c] = (
+        #             alpha_jpg * background[300:600, 400:800, c] + alpha_png * part_resize[:, :, c])
 
         # cv2.imshow('object', _input)
         # cv2.imshow('part', part_box)
