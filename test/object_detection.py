@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 
-np.set_printoptions(threshold=np.inf)
+np.set_printoptions(threshold=np.inf)  # 用于测试时完整print数组
 
 source = "../output/rembg/"
 out_path = "../output/object_detection/"
@@ -18,9 +18,9 @@ def add_alpha_channel(img):
     return img_new
 
 
-def object_detect(img):
+def object_detect(img):  # 返回box的四周坐标
     sp = img.shape
-    print(sp)
+    print('img.shape =', sp)
     width = sp[1]
     height = sp[0]
     top = -1
@@ -91,17 +91,19 @@ if __name__ == "__main__":
         _input = cv2.imread(os.path.join(source, input_path),  # 读入商品透明图图片
                             flags=cv2.IMREAD_UNCHANGED)  # "IMREAD_UNCHANGED"指定用图片的原来格式打开，以读取透明度，不加时只有rgb
 
+        '''添加box'''
         box = object_detect(_input)  # 识别box位置
         box_color = (255, 0, 255, 255)  # 设置box参数，必须设置不透明度
         result = cv2.rectangle(_input, (box[0], box[1]), (box[2], box[3]), color=box_color, thickness=2)  # 给商品加box
         part_box = _input[box[1] + 2:box[3] - 2, box[0] + 2:box[2] - 2]  # 得到box中的商品图
         part_resize = cv2.resize(part_box, (370, 370), interpolation=cv2.INTER_AREA)  # 将商品图调整大小
 
+        '''背景图片jpg加alpha通道'''
         background = cv2.imread("thumbnail.jpg", flags=cv2.IMREAD_UNCHANGED)  # 读取背景图
         background = add_alpha_channel(background)  # 背景图为jpg需要添加alpha通道
-        # 将png商品图贴到jpg背景
+
+        '''将png商品图贴到jpg背景'''
         alpha_png = part_resize[:, :, 3] / 255.0  # alpha通道归一化为0-1
-        print(part_resize[0: 370, 0: 370, 3])
         alpha_jpg = 1 - alpha_png
         for c in range(0, 3):
             background[410:780, 20:390, c] = (
