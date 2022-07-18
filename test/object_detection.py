@@ -1,7 +1,8 @@
 import os
 import cv2
 import numpy as np
-from PIL import Image
+
+np.set_printoptions(threshold=np.inf)
 
 source = "../output/rembg/"
 out_path = "../output/object_detection/"
@@ -98,12 +99,13 @@ if __name__ == "__main__":
 
         background = cv2.imread("thumbnail.jpg", flags=cv2.IMREAD_UNCHANGED)  # 读取背景图
         background = add_alpha_channel(background)  # 背景图为jpg需要添加alpha通道
-
-        alpha_png = part_resize[0: 370, 0: 370, 3] / 255.0  # 将png商品图贴到jpg背景
+        # 将png商品图贴到jpg背景
+        alpha_png = part_resize[:, :, 3] / 255.0  # alpha通道归一化为0-1
+        print(part_resize[0: 370, 0: 370, 3])
         alpha_jpg = 1 - alpha_png
         for c in range(0, 3):
             background[410:780, 20:390, c] = (
-                    (alpha_jpg * background[410:780, 20:390, c]) + (alpha_png * part_resize[0:370, 0:370, c]))
+                    alpha_jpg * background[410:780, 20:390, c] + alpha_png * part_resize[:, :, c])
 
         # cv2.imshow('object', _input)
         # cv2.imshow('part', part_box)
