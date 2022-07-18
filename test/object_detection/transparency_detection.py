@@ -17,6 +17,6 @@ def has_transparency(img):
 
 if __name__ == "__main__":
     # extract_alpha("./13.png")
-    image = Image.open("../output/rembg/output_0.png")
+    image = Image.open("../../output/rembg/output_0.png")
     # image = Image.open("../source/02-927.jpg")
     print(has_transparency(image))
