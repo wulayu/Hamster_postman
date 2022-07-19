@@ -58,7 +58,8 @@ def save_to_seaweed(img):
     img_uuid = str(uuid.uuid1()).replace('-', '')
     img_url = f"http://192.168.200.71:8888/hamster/{img_uuid}.jpg"
     img_path = f'{get_project_path()}/temp/{img_uuid}.png'
-    if isinstance(img, numpy.ndarray):
+    # if type(img) == numpy.ndarray:
+    if isinstance(img, numpy.ndarray):  # cv2的格式与PIL.image的格式的save方式不一样
         cv2.imwrite(os.path.join(img_path), img)
     else:
         img.save(img_path)
