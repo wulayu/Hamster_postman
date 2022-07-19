@@ -2,6 +2,8 @@ import os
 import sys
 import uuid
 import zipfile
+import cv2
+import numpy
 
 import requests
 from loguru import logger
@@ -56,7 +58,10 @@ def save_to_seaweed(img):
     img_uuid = str(uuid.uuid1()).replace('-', '')
     img_url = f"http://192.168.200.71:8888/hamster/{img_uuid}.jpg"
     img_path = f'{get_project_path()}/temp/{img_uuid}.png'
-    img.save(img_path)
+    if isinstance(img, numpy.ndarray):
+        cv2.imwrite(os.path.join(img_path), img)
+    else:
+        img.save(img_path)
 
     files = [
         ('', (f'{img_uuid}.jpg', open(img_path, 'rb'), 'image/jpg'))
@@ -70,3 +75,4 @@ def save_to_seaweed(img):
         return [500, 'save to seaweed failed']
     finally:
         os.remove(img_path)
+
