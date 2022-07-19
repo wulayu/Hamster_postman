@@ -4,11 +4,11 @@ import numpy as np
 
 np.set_printoptions(threshold=np.inf)  # 用于测试时完整print数组
 
-source = "../output/rembg/"
+source = "../../output/rembg/"
 source_dir = os.listdir(source)
 # source_dir.remove('.idea')
 source_dir.sort()
-out_path = "../output/object_detection/"
+out_path = "../../output/object_detection/"
 if not os.path.isdir(out_path):
     os.mkdir(out_path)
 
@@ -103,7 +103,8 @@ if __name__ == "__main__":
         # part_resize = cv2.resize(part_box, (400, 300), interpolation=cv2.INTER_AREA)  # 将商品图调整大小
 
         '''背景图片jpg加alpha通道'''
-        background = cv2.imread(os.path.join("./object_detection/", "thumbnail.jpg"), flags=cv2.IMREAD_UNCHANGED)  # 读取背景图
+        background = cv2.imread("thumbnail.jpg",
+                                flags=cv2.IMREAD_UNCHANGED)  # 读取背景图
         background = add_alpha_channel(background)  # 背景图为jpg需要添加alpha通道
 
         '''将png商品图贴到jpg背景'''
