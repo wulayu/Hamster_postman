@@ -96,4 +96,9 @@ def object_detect(image_base64):  # 返回box的四周坐标
     part_box = img[box[1] + 2:box[3] - 2, box[0] + 2:box[2] - 2]  # 得到box中的商品图
     part_resize = cv2.resize(part_box, (370, 370), interpolation=cv2.INTER_AREA)  # 将商品图调整大小
 
+    '''
+    result： 原图加box
+    part_box： box中的商品图（去边框）
+    part_resize: 将part_box调整大小
+    '''
     return save_to_seaweed(part_box)
