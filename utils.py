@@ -56,7 +56,7 @@ def save_to_seaweed(img):
     :return:
     """
     img_uuid = str(uuid.uuid1()).replace('-', '')
-    img_url = f"http://192.168.200.71:8888/hamster/{img_uuid}.jpg"
+    img_url = f"http://192.168.200.71:8888/hamster/{img_uuid}.png"
     img_path = f'{get_project_path()}/temp/{img_uuid}.png'
     # if type(img) == numpy.ndarray:
     if isinstance(img, numpy.ndarray):  # cv2的格式与PIL.image的格式的save方式不一样
@@ -65,7 +65,7 @@ def save_to_seaweed(img):
         img.save(img_path)
 
     files = [
-        ('', (f'{img_uuid}.jpg', open(img_path, 'rb'), 'image/jpg'))
+        ('', (f'{img_uuid}.png', open(img_path, 'rb'), 'image/png'))
     ]
     try:
         response = requests.request("POST", img_url, headers={}, data={}, files=files)
@@ -76,4 +76,3 @@ def save_to_seaweed(img):
         return [500, 'save to seaweed failed']
     finally:
         os.remove(img_path)
-
